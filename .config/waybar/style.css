@@ -1,0 +1,174 @@
+@import url("file:///home/galleti/.config/omarchy/current/theme/waybar.css");
+
+* {
+  font-family: "JetBrainsMono Nerd Font", "SF Pro Display", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  min-height: 0;
+  min-width: 0;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ----- Barra ----- */
+window#waybar {
+  background: alpha(@background, 0.72);
+  color: @foreground;
+  border-radius: 4px;
+  transition: background 200ms ease;
+}
+
+/* ----- Blocos laterais ----- */
+.modules-left,
+.modules-center,
+.modules-right {
+  padding: 0px 8px;
+}
+
+/* ----- Módulos individuais (pílulas) ----- */
+#custom-logo,
+#window,
+#tray,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#battery,
+#clock,
+#custom-gpu,
+#custom-power,
+#submap {
+  padding: 0 1rem;
+  margin: 0.5rem 0.25rem;
+  border-radius: 3px;
+  background: transparent;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+/* ----- Logo ----- */
+#custom-logo,
+#custom-power {
+  font-size: 15px;
+  color: @foreground;
+}
+
+/* ----- Workspaces ----- */
+#workspaces {
+  padding: 0 4px;
+  margin: 0 2px;
+  background: transparent;
+}
+
+#workspaces button {
+  padding: 0 0.5rem;
+  margin: 0.5rem 0.25rem;
+  color: alpha(@foreground, 0.35);
+  background: transparent;
+  border-radius: 3px;
+  transition: all 200ms ease;
+  font-size: 10px;
+}
+
+#workspaces button:hover {
+  color: alpha(@foreground, 0.7);
+  background: alpha(@foreground, 0.06);
+}
+
+#workspaces button.active {
+  color: @foreground;
+  background: alpha(@foreground, 0.12);
+}
+
+#workspaces button.urgent {
+  color: #ff453a;
+}
+
+/* ----- Título da janela ----- */
+#window {
+  font-weight: 500;
+  color: alpha(@foreground, 0.75);
+}
+
+window#waybar.empty #window {
+  background: transparent;
+  color: alpha(@foreground, 0.4);
+}
+
+/* ----- Stats (direita) ----- */
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#clock,
+#custom-gpu,
+#battery {
+  color: alpha(@foreground, 0.8);
+}
+
+#custom-logo:hover,
+#cpu:hover,
+#memory:hover,
+#network:hover,
+#pulseaudio:hover,
+#battery:hover,
+#custom-power:hover,
+#clock:hover,
+#custom-gpu:hover,
+#window:hover {
+  background: alpha(@foreground, 0.08);
+  color: @foreground;
+}
+
+#custom-gpu.warning {
+  color: #f9e2af;
+}
+
+#custom-gpu.critical {
+  color: #f38ba8;
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.5; }
+}
+
+/* ----- Tooltip ----- */
+tooltip {
+  background: alpha(@background, 0.95);
+  border-radius: 5px;
+}
+
+#custom-sep {
+  padding: 0px;
+  color: #585b70;
+}
+
+/* Workspace visível no MONITOR ATUAL (desta barra) */
+#workspaces button.visible {
+  color: alpha(@foreground, 0.85);
+  background: alpha(@foreground, 0.05);
+}
+
+/* Workspace ativo no monitor atual — reforça o destaque */
+#workspaces button.visible.active {
+  color: @foreground;
+  background: alpha(@foreground, 0.18);
+}
+
+/* Workspace ativo NO OUTRO monitor — mais apagado */
+#workspaces button.active:not(.visible) {
+  color: alpha(@foreground, 0.5);
+  background: alpha(@foreground, 0.06);
+}
+
+#custom-weather {
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+}
+
+#custom-weather.unavailable {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}

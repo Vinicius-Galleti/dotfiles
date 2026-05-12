@@ -1,0 +1,81 @@
+# Tema azul escuro customizado (substitui o tema dinâmico do Omarchy)
+# Para voltar ao tema dinâmico, comente as linhas abaixo e descomente a linha config-file acima
+# config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
+
+# Cores de fundo e primeiro plano
+background = 0f172a
+foreground = cbd5e1
+
+# Cursor
+cursor-color = 60a5fa
+cursor-text = 0f172a
+
+# Seleção
+selection-background = 1e40af
+selection-foreground = e6f0ff
+
+# Cores normais (0-7)
+palette = 0=#1e293b
+palette = 1=#ef4444
+palette = 2=#22c55e
+palette = 3=#e0a458
+palette = 4=#3b82f6
+palette = 5=#a78bfa
+palette = 6=#06b6d4
+palette = 7=#cbd5e1
+
+# Cores brilhantes (8-15)
+palette = 8=#475569
+palette = 9=#fca5a5
+palette = 10=#86efac
+palette = 11=#fcd34d
+palette = 12=#60a5fa
+palette = 13=#c4b5fd
+palette = 14=#67e8f9
+palette = 15=#f1f5f9
+
+# Font
+font-family = "JetBrainsMono Nerd Font"
+font-style = Regular
+font-size = 9
+
+# Window
+window-theme = ghostty
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface = false
+resize-overlay = never
+gtk-toolbar-style = flat
+
+# Transparência e blur
+background-opacity = 0.90
+background-blur-radius = 20
+
+# Cursor styling
+cursor-style = "block"
+cursor-style-blink = true
+cursor-opacity = 0.9
+
+# Shader do cursor - efeito smear
+custom-shader = ~/.config/ghostty/shaders/cursor_blaze.glsl
+
+# Cursor styling + SSH session terminfo
+# (all shell integration options must be passed together)
+shell-integration-features = no-cursor,ssh-env
+
+# Shell padrão
+command = /usr/bin/zsh
+
+# Keyboard bindings
+keybind = shift+insert=paste_from_clipboard
+keybind = control+insert=copy_to_clipboard
+keybind = super+control+shift+alt+arrow_down=resize_split:down,100
+keybind = super+control+shift+alt+arrow_up=resize_split:up,100
+keybind = super+control+shift+alt+arrow_left=resize_split:left,100
+keybind = super+control+shift+alt+arrow_right=resize_split:right,100
+
+# Slowdown mouse scrolling
+mouse-scroll-multiplier = 0.95
+
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll
