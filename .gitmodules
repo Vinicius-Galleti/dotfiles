@@ -1,0 +1,9 @@
+[submodule ".config/omarchy/themes/dark-xp-omarchy"]
+	path = .config/omarchy/themes/dark-xp-omarchy
+	url = https://github.com/ITSZXY/dark-xp-omarchy.git
+[submodule ".config/omarchy/themes/pink-blood-omarchy"]
+	path = .config/omarchy/themes/pink-blood-omarchy
+	url = https://github.com/ITSZXY/pink-blood-omarchy-theme.git
+[submodule ".config/omarchy/themes/temerald"]
+	path = .config/omarchy/themes/temerald
+	url = https://github.com/Ahmad-Mtr/omarchy-temerald-theme.git
