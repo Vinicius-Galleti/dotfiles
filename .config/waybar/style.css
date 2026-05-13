@@ -28,15 +28,14 @@ window#waybar {
 
 /* ----- Módulos individuais (pílulas) ----- */
 #custom-logo,
-#window,
 #tray,
-#cpu,
+#custom-cpu,
 #memory,
 #network,
 #pulseaudio,
-#battery,
 #clock,
 #custom-gpu,
+#custom-music-eq,
 #custom-power,
 #submap {
   padding: 0 1rem;
@@ -84,49 +83,48 @@ window#waybar {
   color: #ff453a;
 }
 
-/* ----- Título da janela ----- */
-#window {
-  font-weight: 500;
-  color: alpha(@foreground, 0.75);
-}
-
-window#waybar.empty #window {
-  background: transparent;
-  color: alpha(@foreground, 0.4);
-}
-
 /* ----- Stats (direita) ----- */
-#cpu,
+#custom-cpu,
 #memory,
 #network,
 #pulseaudio,
 #clock,
 #custom-gpu,
-#battery {
+#custom-music-eq {
   color: alpha(@foreground, 0.8);
 }
 
 #custom-logo:hover,
-#cpu:hover,
+#custom-cpu:hover,
 #memory:hover,
 #network:hover,
 #pulseaudio:hover,
-#battery:hover,
 #custom-power:hover,
 #clock:hover,
 #custom-gpu:hover,
-#window:hover {
+#custom-music-eq:hover {
   background: alpha(@foreground, 0.08);
   color: @foreground;
 }
 
-#custom-gpu.warning {
+#custom-music-eq.paused {
+  color: alpha(@foreground, 0.55);
+}
+
+#custom-gpu.warning,
+#custom-cpu.warning {
   color: #f9e2af;
 }
 
-#custom-gpu.critical {
+#custom-gpu.critical,
+#custom-cpu.critical {
   color: #f38ba8;
   animation: blink 1s linear infinite;
+}
+
+#custom-music-eq.bass {
+  color: #89b4fa;
+  transition: color 60ms linear;
 }
 
 @keyframes blink {
@@ -137,11 +135,6 @@ window#waybar.empty #window {
 tooltip {
   background: alpha(@background, 0.95);
   border-radius: 5px;
-}
-
-#custom-sep {
-  padding: 0px;
-  color: #585b70;
 }
 
 /* Workspace visível no MONITOR ATUAL (desta barra) */
@@ -162,13 +155,3 @@ tooltip {
   background: alpha(@foreground, 0.06);
 }
 
-#custom-weather {
-  margin-left: 7.5px;
-  margin-right: 7.5px;
-}
-
-#custom-weather.unavailable {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-}
