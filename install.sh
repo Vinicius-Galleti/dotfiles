@@ -13,8 +13,11 @@ REPO="https://github.com/Vinicius-Galleti/dotfiles.git"
 DEST="$HOME/.cfg"
 BACKUP_BASE="$HOME/.cfg-backup"
 
-PACMAN_PKGS=(zsh git cava playerctl btop fastfetch qalculate-gtk imv jq python tmux kitty fcitx5)
-AUR_PKGS=(swayosd-git wiremix ghostty lazygit lazydocker)
+PACMAN_PKGS=(
+  zsh git cava playerctl btop fastfetch qalculate-gtk imv jq python tmux
+  kitty ghostty fcitx5 wiremix mise lazygit lazydocker figlet
+)
+AUR_PKGS=(swayosd-git)
 
 C_BLUE=$'\e[1;34m'; C_GREEN=$'\e[1;32m'; C_YELLOW=$'\e[1;33m'; C_RED=$'\e[1;31m'; C_RESET=$'\e[0m'
 info()  { printf "%s==>%s %s\n" "$C_BLUE" "$C_RESET" "$*"; }
@@ -126,18 +129,20 @@ provision_shell() {
         ok "oh-my-zsh já presente"
     fi
 
-    local p10k="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    local zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+    local p10k="$zsh_custom/themes/powerlevel10k"
     if [[ ! -d "$p10k" ]]; then
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$p10k"
     else
         ok "Powerlevel10k já presente"
     fi
 
-    if ! command -v mise >/dev/null; then
-        curl -fsSL https://mise.run | sh
-    else
-        ok "mise já presente"
-    fi
+    # Plugins zsh referenciados no .zshrc (autosuggestions + syntax-highlighting)
+    local plug_dir="$zsh_custom/plugins"
+    [[ -d "$plug_dir/zsh-autosuggestions" ]] \
+        || git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "$plug_dir/zsh-autosuggestions"
+    [[ -d "$plug_dir/zsh-syntax-highlighting" ]] \
+        || git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "$plug_dir/zsh-syntax-highlighting"
 
     ok "Shell provisionado. Quando quiser tornar zsh o shell padrão, rode manualmente:"
     printf "    chsh -s %s\n" "$(command -v zsh)"
@@ -158,7 +163,10 @@ finale() {
 
 ${C_GREEN}Tudo pronto.${C_RESET}
 
-${C_YELLOW}Antes de relogar, ajuste para o SEU hardware:${C_RESET}
+${C_YELLOW}Antes de relogar, ajuste para o SEU hardware/identidade:${C_RESET}
+  • Identidade git:
+      git config --global user.name "Seu Nome"
+      git config --global user.email "voce@exemplo.com"
   • Monitores:  nvim ~/.config/hypr/monitors.conf
                 (default já cobre auto-detect; edite se quiser posições/escala)
   • NVIDIA:     se tiver GPU NVIDIA Turing+, descomente os envs em
