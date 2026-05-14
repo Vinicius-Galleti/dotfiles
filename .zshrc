@@ -1,5 +1,3 @@
-# Animação de boas-vindas (precisa vir ANTES do instant prompt do P10k)
-figlet "$(whoami)" | lolcat
 fastfetch
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.

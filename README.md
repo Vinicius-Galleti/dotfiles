@@ -14,6 +14,14 @@ Pré-requisito: ter o [Omarchy](https://omarchy.org) já instalado.
 bash <(curl -fsSL https://raw.githubusercontent.com/Vinicius-Galleti/dotfiles/main/install.sh)
 ```
 
+> **⚠️ Pós-instalação (antes de relogar)**
+> Os configs são *portáveis* — não há nada hardware-específico hardcoded:
+> - `monitors.conf` usa `monitor=,preferred,auto,1` (auto-detect).
+> - `envs.conf` NVIDIA está comentado por padrão; descomente se tiver GPU NVIDIA.
+> - `chsh` para zsh **não é automático** — rode `chsh -s $(command -v zsh)` depois de validar o login.
+>
+> Se quiser customizar para múltiplos monitores, edite `~/.config/hypr/monitors.conf` ANTES de relogar.
+
 O `install.sh` é idempotente e faz, em sequência:
 
 1. Verifica Arch + Omarchy.

@@ -1,0 +1,12 @@
+# systemd: nunca versionar symlinks de *.target.wants/ (são enables locais)
+.config/systemd/user/*.target.wants/
+.config/systemd/user/*.service.d/
+
+# hyprland backups gerados pelo `omarchy-cmd-keep-backup`
+.config/hypr/*.bak.*
+
+# fastfetch cache
+.config/waybar/__pycache__/
+
+# state local de cada PC (não viaja bem entre máquinas):
+# .config/hypr/monitors.conf  — comentado: queremos versionar o default genérico

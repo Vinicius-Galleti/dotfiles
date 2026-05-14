@@ -86,6 +86,15 @@ checkout_with_backup() {
             rm -f "$err"
             fail "Checkout falhou e não consegui identificar conflitos."
         fi
+        warn "Os seguintes arquivos do PC atual serão movidos para backup:"
+        echo "$conflicts" | sed 's/^/    /'
+        echo
+        printf "Backup vai para: %s\n" "$backup"
+        read -r -p "Aplicar (mover originais para backup e sobrescrever)? [y/N] " ans
+        case "$ans" in
+            [yY]|[yY][eE][sS]) ;;
+            *) rm -f "$err"; fail "Cancelado pelo usuário. Nada foi alterado." ;;
+        esac
         mkdir -p "$backup"
         while read -r f; do
             [[ -e "$HOME/$f" ]] || continue
@@ -130,21 +139,17 @@ provision_shell() {
         ok "mise já presente"
     fi
 
-    local zsh_bin
-    zsh_bin=$(command -v zsh)
-    if [[ "${SHELL:-}" != "$zsh_bin" ]]; then
-        info "Definindo zsh como shell padrão (pode pedir senha)"
-        chsh -s "$zsh_bin" || warn "chsh falhou — rode manualmente: chsh -s $zsh_bin"
-    else
-        ok "zsh já é o shell padrão"
-    fi
+    ok "Shell provisionado. Quando quiser tornar zsh o shell padrão, rode manualmente:"
+    printf "    chsh -s %s\n" "$(command -v zsh)"
 }
 
 # 7. systemd user
 reload_systemd_user() {
     info "Recarregando systemd --user"
-    systemctl --user daemon-reload || warn "daemon-reload falhou (sessão sem user bus?)"
-    ok "Serviços recarregados (units versionadas já vêm habilitadas via *.target.wants/)"
+    systemctl --user daemon-reload 2>/dev/null || warn "daemon-reload falhou (sessão sem user bus?)"
+    ok "Services definidos em .config/systemd/user/ disponíveis."
+    info "Para habilitar serviços opcionais, rode:"
+    printf "    systemctl --user enable --now swayosd-server elephant\n"
 }
 
 # 8. Mensagem final
@@ -153,11 +158,20 @@ finale() {
 
 ${C_GREEN}Tudo pronto.${C_RESET}
 
-Próximos passos:
-  • Saia e entre na sessão (ou rode: hyprctl dispatch exit) para aplicar zsh / Hyprland.
+${C_YELLOW}Antes de relogar, ajuste para o SEU hardware:${C_RESET}
+  • Monitores:  nvim ~/.config/hypr/monitors.conf
+                (default já cobre auto-detect; edite se quiser posições/escala)
+  • NVIDIA:     se tiver GPU NVIDIA Turing+, descomente os envs em
+                ~/.config/hypr/envs.conf
+  • Services:   habilite opcionais com
+                systemctl --user enable --now swayosd-server elephant
+  • Shell zsh:  chsh -s \$(command -v zsh)   (faça DEPOIS de testar o login normal)
+
+Outros pontos:
   • Backups (se houve conflito) ficam em: ${BACKUP_BASE}/<timestamp>/
-  • Alias 'config' já está no .bashrc/.zshrc versionado:
+  • Alias 'config' já está no .bashrc/.zshrc:
       config status / config add / config commit / config push
+  • Para aplicar tudo: saia e entre na sessão (ou: hyprctl dispatch exit)
 
 EOF
 }
