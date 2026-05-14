@@ -108,13 +108,26 @@ checkout_with_backup() {
         ok "Conflitos movidos para $backup"
     fi
     rm -f "$err"
+
+    # Garantir bit executável de scripts versionados
+    chmod +x "$HOME"/.config/hypr/scripts/*.sh 2>/dev/null || true
+    chmod +x "$HOME"/.config/waybar/*.sh "$HOME"/.config/waybar/*.py 2>/dev/null || true
+    chmod +x "$HOME"/install.sh 2>/dev/null || true
 }
 
-# 5. Submódulos (tema dark-xp)
+# 5. Submódulos + aplicar tema dark-xp
 init_submodules() {
-    info "Inicializando submódulos"
+    info "Inicializando submódulos (tema dark-xp-omarchy)"
     config submodule update --init --recursive
     ok "Submódulos prontos"
+
+    if command -v omarchy-theme-set >/dev/null \
+       && [[ -d "$HOME/.config/omarchy/themes/dark-xp-omarchy" ]]; then
+        info "Aplicando tema dark-xp-omarchy"
+        omarchy-theme-set dark-xp-omarchy || warn "Falha ao aplicar tema; rode manualmente: omarchy-theme-set dark-xp-omarchy"
+    else
+        warn "omarchy-theme-set não encontrado ou tema ausente — pulando aplicação."
+    fi
 }
 
 # 6. Shell: oh-my-zsh + p10k + mise + chsh
@@ -163,17 +176,23 @@ finale() {
 
 ${C_GREEN}Tudo pronto.${C_RESET}
 
-${C_YELLOW}Antes de relogar, ajuste para o SEU hardware/identidade:${C_RESET}
-  • Identidade git:
+${C_YELLOW}Ajustes finais (na ordem):${C_RESET}
+  • Identidade git (obrigatório se for commitar):
       git config --global user.name "Seu Nome"
       git config --global user.email "voce@exemplo.com"
+
+${C_BLUE}Opcionais — se algo não estiver do seu jeito:${C_RESET}
   • Monitores:  nvim ~/.config/hypr/monitors.conf
-                (default já cobre auto-detect; edite se quiser posições/escala)
+                (default cobre auto-detect; edite se quiser posicionamento/escala)
   • NVIDIA:     se tiver GPU NVIDIA Turing+, descomente os envs em
                 ~/.config/hypr/envs.conf
   • Services:   habilite opcionais com
                 systemctl --user enable --now swayosd-server elephant
-  • Shell zsh:  chsh -s \$(command -v zsh)   (faça DEPOIS de testar o login normal)
+  • Shell zsh:  chsh -s \$(command -v zsh)   (depois de validar o login normal)
+  • Apps:       instale só os que você usar (alguns bindings em
+                ~/.config/hypr/bindings.conf chamam: 1password, signal-desktop,
+                obsidian, typora, spotify, nautilus, cliamp — falha silenciosa
+                se não estiverem instalados)
 
 Outros pontos:
   • Backups (se houve conflito) ficam em: ${BACKUP_BASE}/<timestamp>/
