@@ -25,14 +25,13 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Vinicius-Galleti/dotfiles/ma
 O `install.sh` é idempotente e faz, em sequência:
 
 1. Verifica Arch + Omarchy.
-2. Instala via `pacman`: `zsh git cava playerctl btop fastfetch qalculate-gtk imv jq python tmux kitty fcitx5`.
-3. Instala via `yay` (AUR): `swayosd-git wiremix ghostty lazygit lazydocker`.
+2. Instala via `pacman`: `zsh git cava playerctl btop fastfetch qalculate-gtk imv jq python tmux kitty ghostty fcitx5 wiremix mise lazygit lazydocker figlet`.
+3. Instala via `yay` (AUR): `swayosd-git`. Se `yay` não estiver instalado, emite warn e segue (sem AUR — você instala depois).
 4. Clona o bare repo em `~/.cfg` e configura `status.showUntrackedFiles=no`.
 5. Faz `checkout` com **backup automático** de conflitos em `~/.cfg-backup/<timestamp>/`.
-6. Inicializa o submódulo de tema (`dark-xp-omarchy`).
-7. Instala oh-my-zsh, powerlevel10k e mise (sem sobrescrever o `.zshrc` versionado).
-8. Define `zsh` como shell padrão (`chsh`).
-9. Recarrega `systemd --user`.
+6. Inicializa o submódulo de tema (`dark-xp-omarchy`) e aplica via `omarchy-theme-set`.
+7. Instala oh-my-zsh, powerlevel10k, `zsh-autosuggestions`, `zsh-syntax-highlighting` (sem sobrescrever o `.zshrc` versionado).
+8. Recarrega `systemd --user`. **NÃO faz `chsh` automaticamente** — rode `chsh -s $(command -v zsh)` manualmente depois de validar o login.
 
 Depois de terminar, saia e entre de novo na sessão (ou `hyprctl dispatch exit`) para aplicar tudo.
 

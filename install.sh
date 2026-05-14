@@ -93,7 +93,14 @@ checkout_with_backup() {
         echo "$conflicts" | sed 's/^/    /'
         echo
         printf "Backup vai para: %s\n" "$backup"
-        read -r -p "Aplicar (mover originais para backup e sobrescrever)? [y/N] " ans
+        local ans
+        if [[ -t 0 ]]; then
+            read -r -p "Aplicar (mover originais para backup e sobrescrever)? [Y/n] " ans
+            ans=${ans:-Y}
+        else
+            info "stdin não-interativo — aplicando automaticamente (backup garantido)"
+            ans=Y
+        fi
         case "$ans" in
             [yY]|[yY][eE][sS]) ;;
             *) rm -f "$err"; fail "Cancelado pelo usuário. Nada foi alterado." ;;
@@ -167,7 +174,8 @@ reload_systemd_user() {
     systemctl --user daemon-reload 2>/dev/null || warn "daemon-reload falhou (sessão sem user bus?)"
     ok "Services definidos em .config/systemd/user/ disponíveis."
     info "Para habilitar serviços opcionais, rode:"
-    printf "    systemctl --user enable --now swayosd-server elephant\n"
+    printf "    systemctl --user enable --now swayosd-server\n"
+    info "elephant.service está versionado mas requer o binário 'elephant' instalado manualmente."
 }
 
 # 8. Mensagem final
@@ -187,7 +195,8 @@ ${C_BLUE}Opcionais — se algo não estiver do seu jeito:${C_RESET}
   • NVIDIA:     se tiver GPU NVIDIA Turing+, descomente os envs em
                 ~/.config/hypr/envs.conf
   • Services:   habilite opcionais com
-                systemctl --user enable --now swayosd-server elephant
+                systemctl --user enable --now swayosd-server
+                (elephant.service requer o binário 'elephant' instalado à parte)
   • Shell zsh:  chsh -s \$(command -v zsh)   (depois de validar o login normal)
   • Apps:       instale só os que você usar (alguns bindings em
                 ~/.config/hypr/bindings.conf chamam: 1password, signal-desktop,
