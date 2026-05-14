@@ -1,5 +1,7 @@
 <img width="1922" height="1080" alt="image" src="https://github.com/user-attachments/assets/18b9753c-1191-4868-a091-d6285839817f" />
 
+#cuidado para instalar. a versão nao esta 100%
+
 # Dotfiles — Galleti
 
 Customizações do meu setup **Omarchy** (Arch + Hyprland): waybar com player de música, hyprlock, walker, terminais, shell (zsh + powerlevel10k + starship), TUIs (btop, lazygit, lazydocker, fastfetch) e sessão Wayland (uwsm, swayosd, wireplumber).
