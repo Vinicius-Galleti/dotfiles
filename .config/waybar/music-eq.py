@@ -35,19 +35,22 @@ def _playerctl(*args):
 
 def metadata_loop():
     global _status, _artist, _title, _album
+    last_good_t = 0.0
+    GRACE = 0.6
     while True:
         s = _playerctl("status")
-        artist = title = album = ""
         if s in ("Playing", "Paused"):
             artist = _playerctl("metadata", "artist")
             title = _playerctl("metadata", "title")
             album = _playerctl("metadata", "album")
-        with _lock:
-            _status = s
-            _artist = artist
-            _title = title
-            _album = album
-        time.sleep(0.5)
+            with _lock:
+                _status, _artist, _title, _album = s, artist, title, album
+            last_good_t = time.monotonic()
+        else:
+            if time.monotonic() - last_good_t > GRACE:
+                with _lock:
+                    _status, _artist, _title, _album = s, "", "", ""
+        time.sleep(0.3)
 
 
 threading.Thread(target=metadata_loop, daemon=True).start()
@@ -87,16 +90,13 @@ for line in cava.stdout:
 
     if status == "Playing":
         bars_text = "".join(LEVELS[min(max(b, 0), len(LEVELS) - 1)] for b in bars)
-        label = html.escape(make_label(artist, title))
-        text = f"{bars_text}  {label}" if label else bars_text
         has_bass = any(bars[i] >= BASS_THRESHOLD for i in BASS_BARS)
         cls = "bass" if has_bass else "playing"
         tooltip = html.escape(f"{artist} — {title}\n{album}".strip())
-        print(json.dumps({"text": text, "class": cls, "tooltip": tooltip}), flush=True)
+        print(json.dumps({"text": bars_text, "class": cls, "tooltip": tooltip}), flush=True)
     elif status == "Paused":
-        label = html.escape(make_label(artist, title))
-        text = f"{PAUSED_BARS}  <i>{label}</i>" if label else PAUSED_BARS
         tooltip = html.escape(f"⏸  {artist} — {title}".strip())
-        print(json.dumps({"text": text, "class": "paused", "tooltip": tooltip}), flush=True)
+        print(json.dumps({"text": PAUSED_BARS, "class": "paused", "tooltip": tooltip}), flush=True)
     else:
-        print(json.dumps({"text": "", "class": "empty", "tooltip": ""}), flush=True)
+        bars_text = "".join(LEVELS[min(max(b, 0), len(LEVELS) - 1)] for b in bars)
+        print(json.dumps({"text": bars_text, "class": "idle", "tooltip": ""}), flush=True)

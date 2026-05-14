@@ -18,8 +18,17 @@
       "hyprland/submap"
     ],
     "modules-center": [
-      "custom/music-eq"
+      "group/player"
     ],
+    "group/player": {
+      "orientation": "horizontal",
+      "modules": [
+        "custom/music-prev",
+        "custom/music-eq",
+        "custom/music-next",
+        "custom/music-title"
+      ]
+    },
     "modules-right": [
       "tray",
       "custom/cpu",
@@ -95,6 +104,22 @@
       "on-click-right": "playerctl next",
       "on-scroll-up": "playerctl next",
       "on-scroll-down": "playerctl previous"
+    },
+    "custom/music-prev": {
+      "format": "󰒮",
+      "tooltip": false,
+      "on-click": "playerctl previous"
+    },
+    "custom/music-next": {
+      "format": "󰒭",
+      "tooltip": false,
+      "on-click": "playerctl next"
+    },
+    "custom/music-title": {
+      "exec": "~/.config/waybar/music-title.py",
+      "max-length": 50,
+      "tooltip": false,
+      "on-click": "playerctl play-pause"
     },
     "custom/power": {
       "tooltip": false,

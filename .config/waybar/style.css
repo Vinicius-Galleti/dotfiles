@@ -35,7 +35,10 @@ window#waybar {
 #pulseaudio,
 #clock,
 #custom-gpu,
+#custom-music-prev,
 #custom-music-eq,
+#custom-music-next,
+#custom-music-title,
 #custom-power,
 #submap {
   padding: 0 1rem;
@@ -90,7 +93,10 @@ window#waybar {
 #pulseaudio,
 #clock,
 #custom-gpu,
-#custom-music-eq {
+#custom-music-prev,
+#custom-music-eq,
+#custom-music-next,
+#custom-music-title {
   color: alpha(@foreground, 0.8);
 }
 
@@ -101,14 +107,17 @@ window#waybar {
 #pulseaudio:hover,
 #custom-power:hover,
 #clock:hover,
-#custom-gpu:hover,
-#custom-music-eq:hover {
+#custom-gpu:hover {
   background: alpha(@foreground, 0.08);
   color: @foreground;
 }
 
 #custom-music-eq.paused {
   color: alpha(@foreground, 0.55);
+}
+
+#custom-music-eq.idle {
+  color: alpha(@foreground, 0.35);
 }
 
 #custom-gpu.warning,
@@ -125,6 +134,46 @@ window#waybar {
 #custom-music-eq.bass {
   color: #4d8bff;
   transition: color 60ms linear;
+}
+
+/* ----- Grupo player: container único (prev + eq + next + title) ----- */
+#player {
+  margin: 0.5rem 0.25rem;
+  padding: 0 0.4rem;
+  border-radius: 3px;
+  background: transparent;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+#player #custom-music-prev,
+#player #custom-music-eq,
+#player #custom-music-next,
+#player #custom-music-title {
+  margin: 0;
+  padding: 0 0.4rem;
+  border-radius: 0;
+  background: transparent;
+  color: alpha(@foreground, 0.8);
+}
+
+#player #custom-music-title {
+  padding-right: 0.4rem;
+  min-width: 280px;
+}
+
+#player #custom-music-title label {
+  padding-left: 0.4rem;
+}
+
+#player:hover {
+  background: alpha(@foreground, 0.08);
+}
+
+#player:hover #custom-music-prev,
+#player:hover #custom-music-eq,
+#player:hover #custom-music-next,
+#player:hover #custom-music-title {
+  color: @foreground;
 }
 
 @keyframes blink {
